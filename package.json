@@ -1,0 +1,44 @@
+{
+    "name": "ChronicRelief",
+    "version": "1.0.0",
+    "description": "Aplicação para a aquisição de métricas e auto-monitoramento de pessoas com doenças crônicas",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "dev": "nodemon index.js"
+    },
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "body-parser": "^1.20.2",
+        "cors": "^2.8.5",
+        "dexie": "^3.2.3",
+        "express": "^4.18.2",
+        "express-rate-limit": "^7.0.0",
+        "express-validator": "^6.14.3",
+        "firebase-admin": "^11.10.0",
+        "helmet": "^6.0.1",
+        "jsonwebtoken": "^9.0.0",
+        "mongoose": "^7.2.2",
+        "node-cron": "^3.0.0",
+        "nodemailer": "^6.9.1"
+    },
+    "devDependencies": {
+        "nodemon": "^3.0.1",
+        "service-worker-mock": "^2.0.5",
+        "winston": "^3.9.0"
+    },
+    "engines": {
+        "node": ">=16.0.0"
+    },
+    "keywords": [
+        "health",
+        "tracking",
+        "express",
+        "mongodb",
+        "notifications",
+        "cron",
+        "security"
+    ],
+    "author": "FR-macedo",
+    "license": "MIT"
+}
