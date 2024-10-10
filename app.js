@@ -1,22 +1,22 @@
 // dependencias
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
-const mongoose = require('mongoose');
-require('dotenv').config();
+const express = require("express");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
+const mongoose = require("mongoose");
+require("dotenv").config();
 
 // configuracoes db
 const connectDB = require("./config/db");
 
 // firebase
-const admin = require('./config/firebase');
-
+const admin = require("./config/firebase");
 
 // Import Routes
-const authRoutes = require('./routes/authRoutes');
-const userRoutes = require('./routes/userRoutes');
+// const authRoutes = require('./routes/authRoutes');
+const userRoutes = require("./routes/userRoutes");
+const doencaRoutes = require("./routes/doencasRoutes");
 
 // Initialize app
 const app = express();
@@ -37,16 +37,18 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // // Routes
-app.use('/api/users', userRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/doencas", doencaRoutes);
 // app.use('/api/auth', authRoutes);
 
 // Database Connection
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-  .then(() => console.log('MongoDB connected!'))
-  .catch((err) => console.log('MongoDB connection error: ', err));
+mongoose
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("MongoDB connected!"))
+  .catch((err) => console.log("MongoDB connection error: ", err));
 
 // Start Server
 const PORT = process.env.PORT;
