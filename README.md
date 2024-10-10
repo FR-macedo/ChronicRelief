@@ -8,6 +8,7 @@ Este projeto é uma aplicação backend desenvolvida em Node.js usando Express e
 - [Rotas de Usuário](#rotas-de-usuário)
 - [Rotas de Doenças](#rotas-de-doenças)
 - [Middleware de Autenticação](#middleware-de-autenticação)
+- [Rotas de Documentos](###Rotas-de-Documentos)
 
 ---
 
@@ -113,4 +114,81 @@ router.post('/api/doencas', authMiddleware, async (req, res) => {
 ```
 
 ---
+
+
+### Rotas de Documentos
+
+Esta seção descreve as rotas disponíveis para o upload, gerenciamento e recuperação de documentos dentro da aplicação. Os documentos são associados a usuários autenticados, permitindo um controle de acesso adequado.
+
+#### 1. Fazer upload de um novo documento
+
+**Endpoint:** `POST /api/documentos/upload`  
+**Headers:**
+- `Authorization: Bearer <token>` (token JWT do usuário)
+
+**Body:**
+- **Form Data:**  
+  - `pdf`: Arquivo do tipo PDF, DOC ou DOCX (máximo de 10MB).
+
+**Descrição:** Esta rota permite que um usuário autenticado faça o upload de um novo documento. O documento será armazenado no GridFS e associado ao ID do usuário logado.
+
+#### 2. Buscar todos os documentos de um usuário
+
+**Endpoint:** `GET /api/documentos`  
+**Headers:**
+- `Authorization: Bearer <token>` (token JWT do usuário)
+
+**Descrição:** Recupera todos os documentos que pertencem ao usuário autenticado. Esta rota garante que o usuário veja apenas seus próprios documentos.
+
+#### 3. Buscar um documento específico
+
+**Endpoint:** `GET /api/documentos/:id`  
+**Headers:**
+- `Authorization: Bearer <token>` (token JWT do usuário)
+
+**Parâmetros:**
+- `id`: ID do documento a ser recuperado.
+
+**Descrição:** Esta rota busca um documento específico pelo seu ID. O acesso é restrito, garantindo que apenas o usuário que fez o upload do documento possa visualizá-lo.
+
+#### 4. Atualizar um documento
+
+**Endpoint:** `PUT /api/documentos/:id`  
+**Headers:**
+- `Authorization: Bearer <token>` (token JWT do usuário)
+
+**Parâmetros:**
+- `id`: ID do documento a ser atualizado.
+
+**Body:**
+- **Form Data:**  
+  - `documento`: Arquivo do tipo PDF, DOC ou DOCX.
+
+**Descrição:** Permite que um usuário autenticado atualize um documento existente. O ID do documento deve ser fornecido na URL, e a atualização só será bem-sucedida se o usuário for o dono do documento.
+
+#### 5. Deletar um documento
+
+**Endpoint:** `DELETE /api/documentos/:id`  
+**Headers:**
+- `Authorization: Bearer <token>` (token JWT do usuário)
+
+**Parâmetros:**
+- `id`: ID do documento a ser deletado.
+
+**Descrição:** Remove um documento específico, tanto da coleção do MongoDB quanto do GridFS, garantindo que o documento não permaneça no sistema após a exclusão.
+
+#### 6. Baixar um documento
+
+**Endpoint:** `GET /api/documentos/:id/download`  
+**Headers:**
+- `Authorization: Bearer <token>` (token JWT do usuário)
+
+**Parâmetros:**
+- `id`: ID do documento a ser baixado.
+
+**Descrição:** Esta rota (em implementação) permitirá que os usuários façam o download de documentos específicos que tenham feito upload anteriormente. A lógica para a recuperação do arquivo do GridFS deve ser adicionada.
+
+---
+
+Essas rotas garantem um gerenciamento eficaz de documentos, permitindo que os usuários façam upload, busquem, atualizem e excluam seus documentos de forma segura e eficiente.
 
