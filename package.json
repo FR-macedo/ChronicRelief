@@ -4,14 +4,15 @@
   "description": "Aplicação para a aquisição de métricas e auto-monitoramento de pessoas com doenças crônicas",
   "main": "app.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dexie": "^3.2.3",
+    "dotenv": "^16.4.5",
     "express": "^4.18.2",
     "express-rate-limit": "^7.0.0",
     "express-validator": "^6.14.3",

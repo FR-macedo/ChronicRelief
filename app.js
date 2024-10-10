@@ -1,4 +1,4 @@
-// app.js
+// dependencias
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -7,12 +7,22 @@ const rateLimit = require('express-rate-limit');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
+// configuracoes db
+const connectDB = require("./config/db");
+
+// firebase
+const admin = require('./config/firebase');
+
+
 // Import Routes
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 
 // Initialize app
 const app = express();
+
+//conectar no bacno
+connectDB();
 
 // Middleware
 app.use(helmet());
@@ -26,9 +36,9 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-// Routes
-app.use('/api/auth', authRoutes);
+// // Routes
 app.use('/api/users', userRoutes);
+// app.use('/api/auth', authRoutes);
 
 // Database Connection
 mongoose.connect(process.env.MONGODB_URI, {
@@ -39,7 +49,7 @@ mongoose.connect(process.env.MONGODB_URI, {
   .catch((err) => console.log('MongoDB connection error: ', err));
 
 // Start Server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
