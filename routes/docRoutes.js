@@ -6,8 +6,7 @@ const router = express.Router();
 const multer = require('multer');
 const gridfsStorage = require('multer-gridfs-storage');
 const path = require('path');
-const   
- mongoose = require('mongoose');   
+const mongoose = require('mongoose');
 const Grid = require('gridfs-stream');
 const Documento = require('../models/Documento');
 
@@ -128,14 +127,14 @@ router.delete('/:id', authenticateToken, async (req, res) => {
 })
 
 // Rota para baixar um documento
-router.get('/:id/download', authenticateToken, async (req, res) => {
-    try {
-        const documento = await Documento.findById(req.params.id);
-        // ... (lógica para baixar o arquivo do GridFS)
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Erro ao baixar documento.', error });
-    }
-});
+// router.get('/:id/download', authenticateToken, async (req, res) => {
+//     try {
+//         const documento = await Documento.findById(req.params.id);
+//         // ... (lógica para baixar o arquivo do GridFS) faltando add
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ message: 'Erro ao baixar documento.', error });
+//     }
+// });
 
 module.exports = router;
