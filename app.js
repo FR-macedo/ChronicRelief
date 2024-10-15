@@ -17,6 +17,7 @@ const admin = require("./config/firebase");
 // const authRoutes = require('./routes/authRoutes');
 const userRoutes = require("./routes/userRoutes");
 const doencaRoutes = require("./routes/doencasRoutes");
+const docRoutes = require("./routes/docRoutes");
 
 // Initialize app
 const app = express();
@@ -26,7 +27,7 @@ connectDB();
 
 // Middleware
 app.use(helmet());
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '5mb' }));
 app.use(cors());
 
 // Rate Limiting
@@ -39,6 +40,7 @@ app.use(limiter);
 // // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/doencas", doencaRoutes);
+app.use("/api/documentos", docRoutes);
 // app.use('/api/auth', authRoutes);
 
 // Database Connection

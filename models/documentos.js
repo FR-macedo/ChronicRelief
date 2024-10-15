@@ -1,34 +1,13 @@
 const mongoose = require('mongoose');
-const gridfs = require('gridfs-stream');
-const conn = mongoose.connection;
-let gfs;
 
-conn.once('open', () => {
-    gfs = gridfs(conn, { gridfs: 'uploads' });
-});
 
-const Schema = mongoose.Schema;
-
-const DocumentoSchema = new Schema({
-    filename: String,
-    contentType: String,
-    size: Number,
+const documentoSchema = new mongoose.Schema({
+    filename: { type: String, required: true },
+    usuario: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    contentType: { type: String, required: true },
+    data: { type: String, required: true }, // Defina o campo para armazenar o base64
     uploadDate: { type: Date, default: Date.now },
-    usuario: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
-    },
-    doenca: {
-        type: Schema.Types.ObjectId,
-        ref: 'Doenca'
-    },
-    // Outros metadados relevantes
-    metadata: {
-        descricao: String,
-        data: Date
-    }
 });
 
-const Documento = mongoose.model('Documento', DocumentoSchema);
-
+const Documento = mongoose.model('Documento', documentoSchema);
 module.exports = Documento;
