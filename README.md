@@ -124,13 +124,21 @@ Esta seção descreve as rotas disponíveis para o upload, gerenciamento e recup
 
 **Endpoint:** `POST /api/documentos/upload`  
 **Headers:**
-- `Authorization: Bearer <token>` (token JWT do usuário)
+- `Authorization: Bearer <token>` (token JWT do usuário, avvi ser usado para adquirir o ID do usuário)
 
 **Body:**
-- **Form Data:**  
-  - `pdf`: Arquivo do tipo PDF, DOC ou DOCX (máximo de 10MB).
+- **JSON:**  
+  - seguindo esse modelo:
 
-**Descrição:** Esta rota permite que um usuário autenticado faça o upload de um novo documento. O documento será armazenado no GridFS e associado ao ID do usuário logado.
+  ```
+  {
+    "Filename":"Nome_do_Documento.pdf",
+    "contentType":"application/pdf",
+    "base64Data":"sdnkkjnfsiddfjsdkgsodg..."
+  }
+  ```
+
+**Descrição:** Esta rota permite que um usuário autenticado faça o upload de um novo documento. O documento será através da base64 do arquivo e associado ao ID do usuário logado.
 
 #### 2. Buscar todos os documentos de um usuário
 

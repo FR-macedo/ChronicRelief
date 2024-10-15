@@ -61,7 +61,7 @@ router.get("/:id", authenticateToken, async (req, res) => {
             return res.status(404).json({ message: "Documento não encontrado." });
         }
         // Verificar se o usuário logado é o dono do documento
-        if (documento.usuario.toString() !== req.user._id.toString()) {
+        if (documento.usuario.toString() !== req.user.id.toString()) {
             return res.status(403).json({ message: "Acesso negado." });
         }
         res.json(documento);
