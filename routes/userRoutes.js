@@ -29,7 +29,7 @@ router.post('/register', async (req, res) => {
     console.error(error);
     res.status(500).json({ message: 'Erro ao cadastrar usuário.', error });
   }
-});
+});  
 
 // Rota para autenticar um usuário
 router.post('/login', async (req, res) => {

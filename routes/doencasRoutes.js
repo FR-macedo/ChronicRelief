@@ -1,28 +1,22 @@
 const express = require("express");
-const User = require("../models/User");
 const verifyToken = require("../middleware/authMiddleware"); // Importa o middleware
 const router = express.Router();
-const Doenca = require('../models/doencas');
-const mongoose = require('mongoose'); // Importando mongoose
-
-
+const Doenca = require("../models/doencas"); // Importando o modelo Doenca
+const mongoose = require("mongoose"); // Importando o mongoose para converter ObjectId
 
 // Rota para criar uma nova doença e associá-la ao usuário autenticado
 router.post("/create", verifyToken, async (req, res) => {
   const { nome, sintomas, dataDiagnostico } = req.body;
-
   try {
     // 1. Validação de campos obrigatórios
     if (!nome || !sintomas || !dataDiagnostico) {
-      return res
-        .status(400)
-        .json({
-          message:
-            "Todos os campos são obrigatórios: nome, sintomas, dataDiagnostico.",
-        });
+      return res.status(400).json({
+        message:
+          "Todos os campos são obrigatórios: nome, sintomas, dataDiagnostico.",
+      });
     }
 
-    // 2. Verificar se a doença já existe (se for necessário no seu caso)
+    // 2. Verificar se a doença já existe para o usuário autenticado
     const doencaExistente = await Doenca.findOne({ nome, userId: req.user.id });
     if (doencaExistente) {
       return res
@@ -30,25 +24,22 @@ router.post("/create", verifyToken, async (req, res) => {
         .json({ message: "Essa doença já foi cadastrada para este usuário." });
     }
 
-    const usuario = await User.findById(req.user.id); // userId vindo do token JWT
-    if (!usuario) {
-      return res.status(404).json({ message: "Usuário não encontrado." });
-    }
-
-    const novaDoenca = {
-      doencaId: new mongoose.Types.ObjectId(),
+    // 3. Criar a nova doença
+    const novaDoenca = new Doenca({
+      userId: req.user.id, // O userId é adicionado a partir do token do usuário autenticado
       nome,
       sintomas,
       dataDiagnostico,
-    };
+    });
 
-    // Adiciona a nova doença ao usuário autenticado
-    usuario.doencas.push(novaDoenca);
-    await usuario.save();
+    // 4. Salvar a nova doença
+    await novaDoenca.save();
 
-    res
-      .status(201)
-      .json({ message: "Doença adicionada com sucesso!", doenca: novaDoenca });
+    // 5. Retornar resposta de sucesso
+    res.status(201).json({
+      message: "Doença adicionada com sucesso!",
+      doenca: novaDoenca,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Erro ao adicionar a doença.", error });
@@ -58,66 +49,61 @@ router.post("/create", verifyToken, async (req, res) => {
 // Rota para visualizar todas as doenças do usuário autenticado
 router.get("/", verifyToken, async (req, res) => {
   try {
-    const usuario = await User.findById(req.user.id);
-    if (!usuario) {
-      return res.status(404).json({ message: "Usuário não encontrado." });
+    // Busca todas as doenças associadas ao userId do token
+    const doencas = await Doenca.find({ userId: req.user.id });
+    if (!doencas || doencas.length === 0) {
+      return res.status(404).json({ message: "Nenhuma doença encontrada para este usuário." });
     }
 
-    res.status(200).json(usuario.doencas);
+    res.status(200).json(doencas);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Erro ao buscar doenças.", error });
   }
 });
 
-// Rota para buscar uma doença pelo ID
-router.get("/:id", verifyToken, async (req, res) => {
+// Rota para buscar uma doença pelo nome (específico para o usuário autenticado)
+router.get("/:nome", verifyToken, async (req, res) => {
   try {
-    const doenca = await Doenca.findById(req.params.id);
+    // Busca uma doença pelo nome e userId
+    const doenca = await Doenca.findOne({ nome: req.params.nome, userId: req.user.id });
     if (!doenca) {
-      return res.status(404).json({ message: "Doença não encontrada" });
+      return res.status(404).json({ message: "Doença não encontrada para este usuário." });
     }
-    res.json(doenca);
+    res.status(200).json(doenca);
   } catch (error) {
-    res.status(500).json({ message: "Erro ao buscar a doença", error });
-  }
-});
-
-// Rota para buscar uma doença pelo nome
-router.get("/nome/:nome", verifyToken, async (req, res) => {
-  try {
-    const doenca = await Doenca.findOne({ nome: req.params.nome });
-    if (!doenca) {
-      return res.status(404).json({ message: "Doença não encontrada" });
-    }
-    res.json(doenca);
-  } catch (error) {
-    res.status(500).json({ message: "Erro ao buscar a doença", error });
+    console.error(error);
+    res.status(500).json({ message: "Erro ao buscar a doença.", error });
   }
 });
 
 // Rota para atualizar uma doença existente do usuário autenticado
 router.put("/update/:doencaId", verifyToken, async (req, res) => {
-  const { doencaId } = req.params;
   const { nome, sintomas, dataDiagnostico } = req.body;
+  const { doencaId } = req.params;
 
   try {
-    const usuario = await User.findById(req.user.id);
-    if (!usuario) {
-      return res.status(404).json({ message: "Usuário não encontrado." });
+    // Verifica se o doencaId é um ObjectId válido antes de tentar a conversão
+    if (!mongoose.Types.ObjectId.isValid(doencaId)) {
+      return res.status(400).json({ message: "ID de doença inválido." });
     }
 
-    const doenca = usuario.doencas.id(doencaId);
+    // Converte o doencaId para ObjectId
+    const objectId = new mongoose.Types.ObjectId(doencaId);
+
+    // Busca a doença pelo ID e verifica se ela pertence ao usuário autenticado
+    const doenca = await Doenca.findOne({ _id: objectId, userId: req.user.id });
     if (!doenca) {
       return res.status(404).json({ message: "Doença não encontrada." });
     }
 
-    // Atualiza os dados da doença
+    // Atualiza os dados da doença apenas se novos valores forem fornecidos
     doenca.nome = nome || doenca.nome;
     doenca.sintomas = sintomas || doenca.sintomas;
     doenca.dataDiagnostico = dataDiagnostico || doenca.dataDiagnostico;
 
-    await usuario.save();
+    // Salva a doença atualizada
+    await doenca.save();
 
     res.status(200).json({ message: "Doença atualizada com sucesso!", doenca });
   } catch (error) {
@@ -131,17 +117,19 @@ router.delete("/delete/:doencaId", verifyToken, async (req, res) => {
   const { doencaId } = req.params;
 
   try {
-    const usuario = await User.findById(req.user.id);
-    if (!usuario) {
-      return res.status(404).json({ message: "Usuário não encontrado." });
+    // Verifica se o doencaId é um ObjectId válido
+    if (!mongoose.Types.ObjectId.isValid(doencaId)) {
+      return res.status(400).json({ message: "ID de doença inválido." });
     }
 
-    // Remove a doença da lista de doenças do usuário
-    usuario.doencas = usuario.doencas.filter(
-      (doenca) => doenca._id.toString() !== doencaId
-    );
+    // Converte o doencaId para ObjectId
+    const objectId = new mongoose.Types.ObjectId(doencaId);
 
-    await usuario.save();
+    // Busca e remove a doença associada ao userId do token
+    const doenca = await Doenca.findOneAndDelete({ _id: objectId, userId: req.user.id });
+    if (!doenca) {
+      return res.status(404).json({ message: "Doença não encontrada." });
+    }
 
     res.status(200).json({ message: "Doença deletada com sucesso!" });
   } catch (error) {

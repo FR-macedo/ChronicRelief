@@ -16,7 +16,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 .catch((error) => {
     console.error('Erro ao conectar ao MongoDB:', error);
 });
-
+// S3, AWS   
 // Rota para upload de um novo documento (protegida por autenticação)
 router.post('/upload', authenticateToken, async (req, res) => {
     try {
