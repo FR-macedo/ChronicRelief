@@ -7,6 +7,7 @@ const rateLimit = require("express-rate-limit");
 const mongoose = require("mongoose");
 require("dotenv").config();
 
+
 // configuracoes db
 const connectDB = require("./config/db");
 
@@ -14,10 +15,10 @@ const connectDB = require("./config/db");
 const admin = require("./config/firebase");
 
 // Import Routes
-// const authRoutes = require('./routes/authRoutes');
 const userRoutes = require("./routes/userRoutes");
 const doencaRoutes = require("./routes/doencasRoutes");
 const docRoutes = require("./routes/docRoutes");
+const medicRoutes = require("./routes/medicRoutes")
 
 // Initialize app
 const app = express();
@@ -41,6 +42,7 @@ app.use(limiter);
 app.use("/api/users", userRoutes);
 app.use("/api/doencas", doencaRoutes);
 app.use("/api/documentos", docRoutes);
+// app.use("/api/medicacoes", medicRoutes);
 // app.use('/api/auth', authRoutes);
 
 // Database Connection

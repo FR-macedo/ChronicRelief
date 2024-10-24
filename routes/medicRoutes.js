@@ -24,7 +24,7 @@ router.post("/create", verifyToken, async (req, res) => {
       horarioAlarme,
       dataInicio,
       dataFim,
-      recorrencia,
+      recorrencia: recorrencia || null  //como recorrencia não está sendo checado no envio, adicionei para que ele ficasse como null, caso não enviado
     });
 
     // 3. Salvar a nova medicação
@@ -60,11 +60,18 @@ router.get("/", verifyToken, async (req, res) => {
 // Rota para buscar uma medicação pelo nome (específico para o usuário autenticado)
 router.get("/:nome", verifyToken, async (req, res) => {
   try {
-    // Busca uma medicação pelo nome e userId
-    const medicacao = await Medicacao.findOne({ nome: req.params.nome, userId: req.user.id });
+    const nome = req.params.nome;
+
+    // Busca uma medicação pelo nome (ignora maiúsculas/minúsculas)
+    const medicacao = await Medicacao.findOne({
+      nome: { $regex: new RegExp("^" + nome + "$", "i") }, // Busca case insensitive
+      userId: req.user.id,
+    });
+
     if (!medicacao) {
       return res.status(404).json({ message: "Medicação não encontrada para este usuário." });
     }
+
     res.status(200).json(medicacao);
   } catch (error) {
     console.error(error);
@@ -74,39 +81,37 @@ router.get("/:nome", verifyToken, async (req, res) => {
 
 // Rota para atualizar uma medicação existente do usuário autenticado
 router.put("/update/:medicacaoId", verifyToken, async (req, res) => {
-    const { nome, dosagem, frequencia, horarioAlarme, dataInicio, dataFim, recorrencia } = req.body;
-    const { medicacaoId } = req.params;
-  
-    try {
-      // Verifica se o medicacaoId é um ObjectId válido antes de tentar a conversão
-      if (!mongoose.Types.ObjectId.isValid(medicacaoId)) {
-        return res.status(400).json({ message: "ID de medicação inválido." });
-      }
-  
-      // Converte o medicacaoId para ObjectId
-      const objectId = new mongoose.Types.ObjectId(medicacaoId);
-  
-      // Busca a medicação pelo ID e verifica se ela pertence ao usuário autenticado
-      const medicacao = await Medicacao.findOne({ _id: objectId, userId: req.user.id });
-      if (!medicacao) {
-        return res.status(404).json({ message: "Medicação não encontrada." });
-      }
-  
-      // Atualiza os dados da medicação apenas se novos valores forem fornecidos
-      medicacao.nome = nome || medicacao.nome;
-      medicacao.dosagem = dosagem || medicacao.dosagem;
-      medicacao.frequencia = frequencia || medicacao.frequencia;
-      medicacao.horarioAlarme = horarioAlarme || medicacao.horarioAlarme;
-      medicacao.dataInicio = dataInicio || medicacao.dataInicio;
-      medicacao.dataFim = dataFim || medicacao.dataFim;
-      medicacao.recorrencia = recorrencia || medicacao.recorrencia;
-  
-      // Salva a medicação atualizada
-      await medicacao.save();
-  
-      res.status(200).json({ message: "Medicação atualizada com sucesso!", medicacao });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Erro ao atualizar a medicação.", error });
+  const { nome, dosagem, frequencia, horarioAlarme, dataInicio, dataFim, recorrencia } = req.body;
+  const { medicacaoId } = req.params;
+
+  try {
+    // Verifica se o medicacaoId é um ObjectId válido
+    if (!mongoose.Types.ObjectId.isValid(medicacaoId)) {
+      return res.status(400).json({ message: "ID de medicação inválido." });
     }
-  });
+
+    // Busca e verifica se a medicação pertence ao usuário autenticado
+    const medicacao = await Medicacao.findOne({ _id: medicacaoId, userId: req.user.id });
+
+    if (!medicacao) {
+      return res.status(404).json({ message: "Medicação não encontrada." });
+    }
+
+    // Atualiza os campos fornecidos
+    medicacao.nome = nome || medicacao.nome;
+    medicacao.dosagem = dosagem || medicacao.dosagem;
+    medicacao.frequencia = frequencia || medicacao.frequencia;
+    medicacao.horarioAlarme = horarioAlarme || medicacao.horarioAlarme;
+    medicacao.dataInicio = dataInicio || medicacao.dataInicio;
+    medicacao.dataFim = dataFim || medicacao.dataFim;
+    medicacao.recorrencia = recorrencia || medicacao.recorrencia;
+
+    // Salva as alterações
+    await medicacao.save();
+
+    res.status(200).json({ message: "Medicação atualizada com sucesso!", medicacao });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erro ao atualizar a medicação.", error });
+  }
+});

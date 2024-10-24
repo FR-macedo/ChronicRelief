@@ -116,7 +116,7 @@ router.post('/api/doencas', authMiddleware, async (req, res) => {
 ---
 
 
-### Rotas de Documentos
+### Rotas de Documentos (amtheus)
 
 Esta seção descreve as rotas disponíveis para o upload, gerenciamento e recuperação de documentos dentro da aplicação. Os documentos são associados a usuários autenticados, permitindo um controle de acesso adequado.
 
@@ -195,3 +195,140 @@ Esta seção descreve as rotas disponíveis para o upload, gerenciamento e recup
 - `id`: ID do documento a ser baixado.
 
 **Descrição:** Esta rota (em implementação) permitirá que os usuários façam o download de documentos específicos que tenham feito upload anteriormente. A lógica para a recuperação do arquivo do GridFS deve ser adicionada.
+
+
+### Rotas de API para Gerenciamento de Medicações (LUIGI)
+
+Esta seção descreve as rotas disponíveis para gerenciar medicações dentro da aplicação. As rotas são protegidas por autenticação, garantindo que apenas usuários autenticados podem acessar e modificar seus próprios dados.
+
+#### 1. Criar uma nova medicação
+
+**Endpoint:** `/medicacoes/create`
+
+**Método:** POST
+
+**Cabeçalhos:**
+
+* `Authorization: Bearer <token>` (token JWT do usuário)
+
+**Corpo da requisição:**
+
+* `nome` (string): Nome da medicação
+* `dosagem` (string): Dosagem da medicação
+* `frequencia` (string): Frequência da medicação
+* `horarioAlarme` (string): Horário do alarme para a medicação
+* `dataInicio` (string): Data de início do tratamento
+* `dataFim` (string): Data de término do tratamento (opcional)
+* `recorrencia` (string): Recorrência do tratamento (opcional)
+
+**Descrição:**
+
+Esta rota permite que um usuário autenticado crie uma nova medicação e a associe à sua conta. A rota valida se todos os campos obrigatórios foram fornecidos e salva a nova medicação no banco de dados.
+
+**Resposta:**
+
+* **Sucesso (201):**
+    * `message`: "Medicação adicionada com sucesso!"
+    * `medicacao`: Objeto JSON da nova medicação criada
+* **Falha (400):**
+    * `message`: "Todos os campos são obrigatórios: nome, dosagem, frequencia, horarioAlarme, dataInicio, dataFim."
+* **Falha (500):**
+    * `message`: "Erro ao adicionar a medicação."
+
+#### 2. Visualizar todas as medicações
+
+**Endpoint:** `/medicacoes`
+
+**Método:** GET
+
+**Cabeçalhos:**
+
+* `Authorization: Bearer <token>` (token JWT do usuário)
+
+**Descrição:**
+
+Esta rota permite que um usuário autenticado visualize todas as medicações que ele cadastrou.
+
+**Resposta:**
+
+* **Sucesso (200):**
+    * Array de objetos JSON representando as medicações do usuário
+* **Falha (404):**
+    * `message`: "Nenhuma medicação encontrada para este usuário."
+* **Falha (500):**
+    * `message`: "Erro ao buscar medicações."
+
+#### 3. Buscar uma medicação pelo nome
+
+**Endpoint:** `/medicacoes/:nome`
+
+**Método:** GET
+
+**Cabeçalhos:**
+
+* `Authorization: Bearer <token>` (token JWT do usuário)
+
+**Parâmetros:**
+
+* `nome` (string): Nome da medicação a ser buscada
+
+**Descrição:**
+
+Esta rota permite que um usuário autenticado busque uma medicação específica pelo nome. A busca é realizada apenas entre as medicações do usuário autenticado.
+
+**Resposta:**
+
+* **Sucesso (200):**
+    * Objeto JSON da medicação encontrada
+* **Falha (404):**
+    * `message`: "Medicação não encontrada para este usuário."
+* **Falha (500):**
+    * `message`: "Erro ao buscar a medicação."
+
+#### 4. Atualizar uma medicação existente
+
+**Endpoint:** `/medicacoes/update/:medicacaoId`
+
+**Método:** PUT
+
+**Cabeçalhos:**
+
+* `Authorization: Bearer <token>` (token JWT do usuário)
+
+**Parâmetros:**
+
+* `medicacaoId` (string): ID da medicação a ser atualizada
+
+**Corpo da requisição:**
+
+* Quaisquer dos campos da medicação que você deseja atualizar (opcional)
+
+**Descrição:**
+
+Esta rota permite que um usuário autenticado atualize uma medicação existente. O usuário pode atualizar qualquer um dos campos da medicação, e os campos não fornecidos na requisição serão mantidos inalterados.
+
+**Resposta:**
+
+* **Sucesso (200):**
+    * `message`: "Medicação atualizada com sucesso!"
+    * `medicacao`: Objeto JSON da medicação atualizada
+* **Falha (400):**
+    * `message`: "ID de medicação inválido."
+* **Falha (404):**
+    * `message`: "Medicação não encontrada."
+* **Falha (500):**
+    * `message`: "Erro ao atualizar a medicação."
+
+**Observações:**
+
+* As rotas são protegidas por autenticação, exigindo um token JWT válido para acesso.
+* A lógica de autenticação deve ser implementada no middleware `authMiddleware`.
+* É importante implementar mecanismos de segurança robustos para proteger os dados do usuário.
+* As respostas devem conter mensagens claras e informativas para o cliente.
+
+**Sugestões:**
+
+* Implemente funcionalidades adicionais, como exclusão de medicações, busca por data, etc.
+* Utilize testes automatizados para garantir a qualidade das rotas.
+* Documente completamente as rotas, parâmetros de requisição e resposta, e exemplos de uso.
+
