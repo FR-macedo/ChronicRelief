@@ -115,3 +115,30 @@ router.put("/update/:medicacaoId", verifyToken, async (req, res) => {
     res.status(500).json({ message: "Erro ao atualizar a medicação.", error });
   }
 });
+
+// Rota para apagar uma medicação existente do usuário autenticado
+router.delete("/delete/:medicacaoId", verifyToken, async (req, res) => {
+  const { medicacaoId } = req.params;
+
+  try {
+    // Verifica se o medicacaoId é um ObjectId válido
+    if (!mongoose.Types.ObjectId.isValid(medicacaoId)) {
+      return res.status(400).json({ message: "ID de medicação inválido." });
+    }
+
+    // Busca a medicação pelo ID e verifica se ela pertence ao usuário autenticado
+    const medicacao = await Medicacao.findOne({ _id: medicacaoId, userId: req.user.id });
+
+    if (!medicacao) {
+      return res.status(404).json({ message: "Medicação não encontrada." });
+    }
+
+    // Remove a medicação do banco de dados
+    await Medicacao.deleteOne({ _id: medicacaoId });
+
+    res.status(200).json({ message: "Medicação apagada com sucesso!" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erro ao apagar a medicação.", error });
+  }
+});

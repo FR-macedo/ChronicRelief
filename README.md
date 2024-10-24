@@ -326,9 +326,17 @@ Esta rota permite que um usuário autenticado atualize uma medicação existente
 * É importante implementar mecanismos de segurança robustos para proteger os dados do usuário.
 * As respostas devem conter mensagens claras e informativas para o cliente.
 
-**Sugestões:**
+#### 5. Apagar Medicação
+  **Método:** DELETE
 
-* Implemente funcionalidades adicionais, como exclusão de medicações, busca por data, etc.
-* Utilize testes automatizados para garantir a qualidade das rotas.
-* Documente completamente as rotas, parâmetros de requisição e resposta, e exemplos de uso.
+  **URL:** /api/medicacoes/delete/:medicacaoId
+    Descrição: Esta rota permite que um usuário autenticado apague uma medicação existente associada ao seu perfil. A medicação será identificada pelo seu medicacaoId, que deve ser passado como parâmetro na URL.
 
+  **Requisitos:**
+
+    O usuário deve estar autenticado. A autenticação é realizada por meio de um token JWT, que deve ser enviado no header da requisição.
+    O medicacaoId deve ser válido e associado ao usuário autenticado.
+
+**Parâmetros da URL**
+
+    medicacaoId: O ID da medicação que será apagada.
