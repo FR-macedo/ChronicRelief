@@ -1,0 +1,27 @@
+{
+  "type": "Compass Connections",
+  "version": {
+    "$numberInt": "1"
+  },
+  "connections": [
+    {
+      "id": "96db4530-59ab-4710-933b-cb526917cff8",
+      "lastUsed": {
+        "$date": {
+          "$numberLong": "1729128033881"
+        }
+      },
+      "favorite": {
+        "name": "ChronicReliefCONEC",
+        "color": "color9"
+      },
+      "savedConnectionType": "recent",
+      "connectionOptions": {
+        "connectionString": "mongodb://localhost:27017/",
+        "oidc": {
+          "serializedState": "eyJvaWRjUGx1Z2luU3RhdGVWZXJzaW9uIjowLCJzdGF0ZSI6W119"
+        }
+      }
+    }
+  ]
+}

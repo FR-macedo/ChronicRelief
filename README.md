@@ -195,8 +195,3 @@ Esta seção descreve as rotas disponíveis para o upload, gerenciamento e recup
 - `id`: ID do documento a ser baixado.
 
 **Descrição:** Esta rota (em implementação) permitirá que os usuários façam o download de documentos específicos que tenham feito upload anteriormente. A lógica para a recuperação do arquivo do GridFS deve ser adicionada.
-
----
-
-Essas rotas garantem um gerenciamento eficaz de documentos, permitindo que os usuários façam upload, busquem, atualizem e excluam seus documentos de forma segura e eficiente.
-

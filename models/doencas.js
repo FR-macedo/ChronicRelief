@@ -8,6 +8,10 @@ const DoencaSchema = new Schema({
     type: String,
     required: [true, 'O nome da doença é obrigatório'],
   },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    require: true
+  },
   sintomas: {
     type: [String],
     required: [true, 'Os sintomas da doença são obrigatórios'],
