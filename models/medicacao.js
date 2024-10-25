@@ -1,4 +1,5 @@
 
+const { ObjectID } = require('mongodb');
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
@@ -20,6 +21,14 @@ const RecorrenciaSchema = new Schema({
 
 // Definindo o esquema para Medicação
 const MedicacaoSchema = new Schema({
+  medicacao_Id:{
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: [true]
+  },
   nome: {
     type: String,
     required: [true, 'O nome da medicação é obrigatório'],

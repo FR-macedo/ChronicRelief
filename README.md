@@ -219,7 +219,11 @@ Esta seção descreve as rotas disponíveis para gerenciar medicações dentro d
 * `horarioAlarme` (string): Horário do alarme para a medicação
 * `dataInicio` (string): Data de início do tratamento
 * `dataFim` (string): Data de término do tratamento (opcional)
-* `recorrencia` (string): Recorrência do tratamento (opcional)
+* `recorrencia` (Objeto):{
+    * tipo: daily, weekly, monthly,
+    * intervalos: (int),
+    * diasDaSemana: (String): segunda, sexta, sabado
+} Recorrência do tratamento (opcional)
 
 **Descrição:**
 

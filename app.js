@@ -42,7 +42,7 @@ app.use(limiter);
 app.use("/api/users", userRoutes);
 app.use("/api/doencas", doencaRoutes);
 app.use("/api/documentos", docRoutes);
-// app.use("/api/medicacoes", medicRoutes);
+app.use("/api/medicacoes", medicRoutes);
 
 // Database Connection
 mongoose

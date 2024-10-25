@@ -17,6 +17,7 @@ router.post("/create", verifyToken, async (req, res) => {
 
     // 2. Criar a nova medicação
     const novaMedicacao = new Medicacao({
+      medicacao_Id: new mongoose.Types.ObjectId,
       userId: req.user.id, // O userId é adicionado a partir do token do usuário autenticado
       nome,
       dosagem,
@@ -90,8 +91,11 @@ router.put("/update/:medicacaoId", verifyToken, async (req, res) => {
       return res.status(400).json({ message: "ID de medicação inválido." });
     }
 
+    // Faz o casting de medicacaoId para ObjectId
+    const objectId = new mongoose.Types.ObjectId(medicacaoId);
+
     // Busca e verifica se a medicação pertence ao usuário autenticado
-    const medicacao = await Medicacao.findOne({ _id: medicacaoId, userId: req.user.id });
+    const medicacao = await Medicacao.findOneAndUpdate({ medicacao_Id: objectId, userId: req.user.id });
 
     if (!medicacao) {
       return res.status(404).json({ message: "Medicação não encontrada." });
@@ -115,6 +119,7 @@ router.put("/update/:medicacaoId", verifyToken, async (req, res) => {
     res.status(500).json({ message: "Erro ao atualizar a medicação.", error });
   }
 });
+
 
 // Rota para apagar uma medicação existente do usuário autenticado
 router.delete("/delete/:medicacaoId", verifyToken, async (req, res) => {
@@ -142,3 +147,5 @@ router.delete("/delete/:medicacaoId", verifyToken, async (req, res) => {
     res.status(500).json({ message: "Erro ao apagar a medicação.", error });
   }
 });
+
+module.exports = router;
