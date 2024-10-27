@@ -2,22 +2,47 @@ const express = require("express");
 const verifyToken = require("../middleware/authMiddleware");
 const router = express.Router();
 const Medicacao = require("../models/medicacao");
-const mongoose = require("mongoose"); 
+const mongoose = require("mongoose");
 
 // Rota para criar uma nova medicação e associá-la ao usuário autenticado
 router.post("/create", verifyToken, async (req, res) => {
-  const { nome, dosagem, frequencia, horarioAlarme, dataInicio, dataFim, recorrencia } = req.body;
+  const {
+    nome,
+    dosagem,
+    frequencia,
+    horarioAlarme,
+    dataInicio,
+    dataFim,
+    recorrencia,
+  } = req.body;
   try {
     // 1. Validação de campos obrigatórios
-    if (!nome || !dosagem || !frequencia || !horarioAlarme || !dataInicio || !dataFim) {
+    if (
+      !nome ||
+      !dosagem ||
+      !frequencia ||
+      !horarioAlarme ||
+      !dataInicio ||
+      !dataFim
+    ) {
       return res.status(400).json({
-        message: "Todos os campos são obrigatórios: nome, dosagem, frequencia, horarioAlarme, dataInicio, dataFim.",
+        message:
+          "Todos os campos são obrigatórios: nome, dosagem, frequencia, horarioAlarme, dataInicio, dataFim.",
+      });
+    }
+
+    const MedicacaoExistente = await Medicacao.findOne({
+      nome,
+      userId: req.user.id,
+    });
+    if (MedicacaoExistente) {
+      return res.status(400).json({
+        message: "Essa Medicação já foi cadastrada para este usuário.",
       });
     }
 
     // 2. Criar a nova medicação
     const novaMedicacao = new Medicacao({
-      medicacao_Id: new mongoose.Types.ObjectId,
       userId: req.user.id, // O userId é adicionado a partir do token do usuário autenticado
       nome,
       dosagem,
@@ -25,7 +50,7 @@ router.post("/create", verifyToken, async (req, res) => {
       horarioAlarme,
       dataInicio,
       dataFim,
-      recorrencia: recorrencia || null  //como recorrencia não está sendo checado no envio, adicionei para que ele ficasse como null, caso não enviado
+      recorrencia: recorrencia || null, //como recorrencia não está sendo checado no envio, adicionei para que ele ficasse como null, caso não enviado
     });
 
     // 3. Salvar a nova medicação
@@ -48,7 +73,9 @@ router.get("/", verifyToken, async (req, res) => {
     // Busca todas as medicações associadas ao userId do token
     const medicamentos = await Medicacao.find({ userId: req.user.id });
     if (!medicamentos || medicamentos.length === 0) {
-      return res.status(404).json({ message: "Nenhuma medicação encontrada para este usuário." });
+      return res
+        .status(404)
+        .json({ message: "Nenhuma medicação encontrada para este usuário." });
     }
 
     res.status(200).json(medicamentos);
@@ -70,9 +97,10 @@ router.get("/:nome", verifyToken, async (req, res) => {
     });
 
     if (!medicacao) {
-      return res.status(404).json({ message: "Medicação não encontrada para este usuário." });
+      return res
+        .status(404)
+        .json({ message: "Medicação não encontrada para este usuário." });
     }
-
     res.status(200).json(medicacao);
   } catch (error) {
     console.error(error);
@@ -82,7 +110,15 @@ router.get("/:nome", verifyToken, async (req, res) => {
 
 // Rota para atualizar uma medicação existente do usuário autenticado
 router.put("/update/:medicacaoId", verifyToken, async (req, res) => {
-  const { nome, dosagem, frequencia, horarioAlarme, dataInicio, dataFim, recorrencia } = req.body;
+  const {
+    nome,
+    dosagem,
+    frequencia,
+    horarioAlarme,
+    dataInicio,
+    dataFim,
+    recorrencia,
+  } = req.body;
   const { medicacaoId } = req.params;
 
   try {
@@ -95,8 +131,10 @@ router.put("/update/:medicacaoId", verifyToken, async (req, res) => {
     const objectId = new mongoose.Types.ObjectId(medicacaoId);
 
     // Busca e verifica se a medicação pertence ao usuário autenticado
-    const medicacao = await Medicacao.findOneAndUpdate({ medicacao_Id: objectId, userId: req.user.id });
-
+    const medicacao = await Medicacao.findOne({
+      _id: objectId,
+      userId: req.user.id,
+    });
     if (!medicacao) {
       return res.status(404).json({ message: "Medicação não encontrada." });
     }
@@ -113,13 +151,14 @@ router.put("/update/:medicacaoId", verifyToken, async (req, res) => {
     // Salva as alterações
     await medicacao.save();
 
-    res.status(200).json({ message: "Medicação atualizada com sucesso!", medicacao });
+    res
+      .status(200)
+      .json({ message: "Medicação atualizada com sucesso!", medicacao });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Erro ao atualizar a medicação.", error });
   }
 });
-
 
 // Rota para apagar uma medicação existente do usuário autenticado
 router.delete("/delete/:medicacaoId", verifyToken, async (req, res) => {
@@ -131,15 +170,16 @@ router.delete("/delete/:medicacaoId", verifyToken, async (req, res) => {
       return res.status(400).json({ message: "ID de medicação inválido." });
     }
 
-    // Busca a medicação pelo ID e verifica se ela pertence ao usuário autenticado
-    const medicacao = await Medicacao.findOne({ _id: medicacaoId, userId: req.user.id });
+    const objectId = new mongoose.Types.ObjectId(medicacaoId);
 
+    // Busca a medicação pelo ID e verifica se ela pertence ao usuário autenticado
+    const medicacao = await Medicacao.findOneAndDelete({
+      _id: objectId,
+      userId: req.user.id,
+    });
     if (!medicacao) {
       return res.status(404).json({ message: "Medicação não encontrada." });
     }
-
-    // Remove a medicação do banco de dados
-    await Medicacao.deleteOne({ _id: medicacaoId });
 
     res.status(200).json({ message: "Medicação apagada com sucesso!" });
   } catch (error) {
