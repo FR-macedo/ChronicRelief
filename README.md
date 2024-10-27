@@ -8,7 +8,8 @@ Este projeto é uma aplicação backend desenvolvida em Node.js usando Express e
 - [Rotas de Usuário](#rotas-de-usuário)
 - [Rotas de Doenças](#rotas-de-doenças)
 - [Middleware de Autenticação](#middleware-de-autenticação)
-- [Rotas de Documentos](###Rotas-de-Documentos)
+- [Rotas de Documentos](#rotas-de-documentos)
+- [Rotas de Medicamentos](#rotas-de-medicamentos)
 
 ---
 
@@ -116,7 +117,7 @@ router.post('/api/doencas', authMiddleware, async (req, res) => {
 ---
 
 
-### Rotas de Documentos (amtheus)
+## Rotas de Documentos
 
 Esta seção descreve as rotas disponíveis para o upload, gerenciamento e recuperação de documentos dentro da aplicação. Os documentos são associados a usuários autenticados, permitindo um controle de acesso adequado.
 
@@ -197,7 +198,7 @@ Esta seção descreve as rotas disponíveis para o upload, gerenciamento e recup
 **Descrição:** Esta rota (em implementação) permitirá que os usuários façam o download de documentos específicos que tenham feito upload anteriormente. A lógica para a recuperação do arquivo do GridFS deve ser adicionada.
 
 
-### Rotas de API para Gerenciamento de Medicações (LUIGI)
+## Rotas de Medicamnetos
 
 Esta seção descreve as rotas disponíveis para gerenciar medicações dentro da aplicação. As rotas são protegidas por autenticação, garantindo que apenas usuários autenticados podem acessar e modificar seus próprios dados.
 
