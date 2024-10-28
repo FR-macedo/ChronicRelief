@@ -9,7 +9,10 @@ Este projeto é uma aplicação backend desenvolvida em Node.js usando Express e
 - [Rotas de Doenças](#rotas-de-doenças)
 - [Middleware de Autenticação](#middleware-de-autenticação)
 - [Rotas de Documentos](#rotas-de-documentos)
-- [Rotas de Medicamentos](#rotas-de-medicamentos)
+- [Rotas de Medicamentos](#rotas-de-medicamnetos)
+- [Rotas dos FOrmulários para a persona MS](#rotas-dos-formulários-ms)
+- [Rotas dos FOrmulários para a persona PS](#rotas-dos-formulários-ps)
+- [Rotas dos FOrmulários para a persona JP](#rotas-dos-formulários-jp)
 
 ---
 
@@ -345,3 +348,170 @@ Esta rota permite que um usuário autenticado atualize uma medicação existente
 **Parâmetros da URL**
 
     medicacaoId: O ID da medicação que será apagada.
+
+## Rotas dos Formulários MS
+
+### Registros Diários
+
+1. Criar um Registro Diário
+
+    Rota: POST /diario/create
+    Descrição: Cria um novo registro diário para o usuário autenticado.
+    Campos obrigatórios no corpo da requisição: nivelEstresse, sintomas, tecnicasGerenciamentoEstresse, humorGeral
+    Resposta de sucesso: 201 Created
+    Resposta de erro: 400 Bad Request ou 500 Internal Server Error
+
+2. Obter Registros Diários
+
+    Rota: GET /diario
+    Descrição: Retorna todos os registros diários do usuário autenticado.
+    Resposta de sucesso: 200 OK
+    Resposta de erro: 404 Not Found se nenhum registro for encontrado, 500 Internal Server Error
+
+3. Atualizar Registro Diário por ID
+
+    Rota: PUT /diario/update/:id
+    Descrição: Atualiza um registro diário específico do usuário autenticado.
+    Campos opcionais no corpo da requisição: nivelEstresse, sintomas, tecnicasGerenciamentoEstresse, outrasTecnicas, tempoTecnicas, humorGeral, observacoes
+    Resposta de sucesso: 200 OK
+    Resposta de erro: 400 Bad Request se o ID for inválido, 404 Not Found se o registro não existir, 500 Internal Server Error
+
+4. Deletar Registro Diário por ID
+
+    Rota: DELETE /diario/delete/:id
+    Descrição: Remove um registro diário específico do usuário autenticado.
+    Resposta de sucesso: 200 OK
+    Resposta de erro: 400 Bad Request se o ID for inválido, 404 Not Found se o registro não existir, 500 Internal Server Error
+
+### Registros Semanais
+
+1. Criar um Registro Semanal
+
+    Rota: POST /semanal/create
+    Descrição: Cria um novo registro semanal para o usuário autenticado.
+    Campos obrigatórios no corpo da requisição: dataInicio, nivelEstresseMedio, fatoresAumentoEstresse, fatoresReducaoEstresse
+    Resposta de sucesso: 201 Created
+    Resposta de erro: 400 Bad Request ou 500 Internal Server Error
+
+2. Obter Registros Semanais
+
+    Rota: GET /semanal
+    Descrição: Retorna todos os registros semanais do usuário autenticado.
+    Resposta de sucesso: 200 OK
+    Resposta de erro: 404 Not Found se nenhum registro for encontrado, 500 Internal Server Error
+
+3. Atualizar Registro Semanal por ID
+
+    Rota: PUT /semanal/update/:id
+    Descrição: Atualiza um registro semanal específico do usuário autenticado.
+    Campos opcionais no corpo da requisição: dataInicio, nivelEstresseMedio, fatoresAumentoEstresse, outrosFatoresAumento, fatoresReducaoEstresse, outrosFatoresReducao, observacoes
+    Resposta de sucesso: 200 OK
+    Resposta de erro: 400 Bad Request se o ID for inválido, 404 Not Found se o registro não existir, 500 Internal Server Error
+
+4. Deletar Registro Semanal por ID
+
+    Rota: DELETE /semanal/delete/:id
+    Descrição: Remove um registro semanal específico do usuário autenticado.
+    Resposta de sucesso: 200 OK
+    Resposta de erro: 400 Bad Request se o ID for inválido, 404 Not Found se o registro não existir, 500 Internal Server Error
+
+## Rotas dos Formulários PS
+
+### Rotas de Formulários Diários
+
+#### Criar um novo formulário diário
+- **Rota**: `POST /diario/create`
+- **Autenticação**: JWT
+- **Parâmetros do Body**:
+  - `dataRegistro`: Data do registro (obrigatório)
+  - `sintomas`: Array de sintomas (obrigatório)
+  - `outrosSintomas`: Sintomas adicionais
+  - `observacoes`: Observações adicionais
+
+#### Visualizar todos os formulários diários
+- **Rota**: `GET /diario`
+- **Autenticação**: JWT
+
+#### Atualizar um formulário diário
+- **Rota**: `PUT /diario/update/:id`
+- **Autenticação**: JWT
+- **Parâmetros do Body**:
+  - `dataRegistro`
+  - `sintomas`
+  - `outrosSintomas`
+  - `observacoes`
+
+#### Deletar um formulário diário
+- **Rota**: `DELETE /diario/delete/:id`
+- **Autenticação**: JWT
+
+### Rotas de Formulários Semanais
+
+#### Criar um novo formulário semanal
+- **Rota**: `POST /semanal/create`
+- **Autenticação**: JWT
+- **Parâmetros do Body**:
+  - `dataConsultaAnterior`: Data da consulta anterior (obrigatório)
+  - `sintomas`: Array de sintomas (obrigatório)
+  - `outrosSintomas`: Sintomas adicionais
+  - `observacoes`: Observações adicionais
+
+#### Visualizar todos os formulários semanais
+- **Rota**: `GET /semanal`
+- **Autenticação**: JWT
+
+#### Atualizar um formulário semanal
+- **Rota**: `PUT /semanal/update/:id`
+- **Autenticação**: JWT
+- **Parâmetros do Body**:
+  - `dataConsultaAnterior`
+  - `sintomas`
+  - `outrosSintomas`
+  - `observacoes`
+
+#### Deletar um formulário semanal
+- **Rota**: `DELETE /semanal/delete/:id`
+- **Autenticação**: JWT
+
+
+## Rotas dos Formulários JP
+
+### Rotas Diárias (/diario)
+
+    Criar um novo registro diário
+        POST /diario/create
+        Corpo da requisição: campos obrigatórios incluem nivelAnsiedade, sintomas, tecnicasRelaxamento, humorGeral.
+        Retorna o registro criado ou uma mensagem de erro caso faltem campos obrigatórios.
+
+    Obter todos os registros diários
+        GET /diario
+        Retorna todos os registros diários do usuário autenticado.
+
+    Atualizar um registro diário por ID
+        PUT /diario/update/:id
+        Atualiza o registro diário específico do usuário pelo ID.
+        Corpo da requisição: campos a serem atualizados.
+
+    Deletar um registro diário por ID
+        DELETE /diario/delete/:id
+        Exclui o registro diário do usuário pelo ID.
+
+### Rotas Semanais (/semanal)
+
+    Criar um novo registro semanal
+        POST /semanal/create
+        Corpo da requisição: campos obrigatórios incluem dataConsultaAnterior, nivelAnsiedadeMedia, fatoresAumentoAnsiedade, fatoresReducaoAnsiedade.
+        Retorna o registro criado ou uma mensagem de erro caso faltem campos obrigatórios.
+
+    Obter todos os registros semanais
+        GET /semanal
+        Retorna todos os registros semanais do usuário autenticado.
+
+    Atualizar um registro semanal por ID
+        PUT /semanal/update/:id
+        Atualiza o registro semanal específico do usuário pelo ID.
+        Corpo da requisição: campos a serem atualizados.
+
+    Deletar um registro semanal por ID
+        DELETE /semanal/delete/:id
+        Exclui o registro semanal do usuário pelo ID.
