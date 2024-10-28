@@ -19,9 +19,6 @@ const userRoutes = require("./routes/userRoutes");
 const doencaRoutes = require("./routes/doencasRoutes");
 const docRoutes = require("./routes/docRoutes");
 const medicRoutes = require("./routes/medicRoutes")
-const formMSRoutes = require('./routes/formMSRoutes')
-const formPSRoutes = require('./routes/formPSRoutes')
-const formJPRoutes = require('./routes/formJPRoutes')
 
 // Initialize app
 const app = express();
@@ -46,9 +43,6 @@ app.use("/api/users", userRoutes);
 app.use("/api/doencas", doencaRoutes);
 app.use("/api/documentos", docRoutes);
 app.use("/api/medicacoes", medicRoutes);
-app.use('/api/forms/MS',formMSRoutes);
-app.use('/api/forms/PS',formPSRoutes);
-app.use('/api/forms/JP',formJPRoutes);
 
 // Database Connection
 mongoose

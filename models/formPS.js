@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 // Definindo o esquema para o Formulário Diário
-const FormPSDiarioSchema = new Schema({
+const FormularioDiarioSchema = new Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User', // Referência para o esquema de usuários
@@ -103,7 +103,7 @@ const FormPSDiarioSchema = new Schema({
 });
 
 // Definindo o esquema para o Formulário Semanal
-const FormPSSemanalSchema = new Schema({
+const FormularioSemanalSchema = new Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User', // Referência para o esquema de usuários
@@ -164,7 +164,7 @@ const FormPSSemanalSchema = new Schema({
 });
 
 // Criando os modelos de Formulário
-const FormularioDiario = mongoose.model('FormPSDiarioSchema', FormPSDiarioSchema);
-const FormularioSemanal = mongoose.model('FormPSSemanalSchema', FormPSSemanalSchema);
+const FormularioDiario = mongoose.model('FormularioDiario', FormularioDiarioSchema);
+const FormularioSemanal = mongoose.model('FormularioSemanal', FormularioSemanalSchema);
 
 module.exports = { FormularioDiario, FormularioSemanal };
