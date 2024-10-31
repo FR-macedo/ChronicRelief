@@ -15,13 +15,13 @@ const connectDB = require("./config/db");
 const admin = require("./config/firebase");
 
 // Import Routes
-const userRoutes = require("./routes/userRoutes");
-const doencaRoutes = require("./routes/doencasRoutes");
-const docRoutes = require("./routes/docRoutes");
-const medicRoutes = require("./routes/medicRoutes")
-const formMSRoutes = require('./routes/formMSRoutes')
-const formPSRoutes = require('./routes/formPSRoutes')
-const formJPRoutes = require('./routes/formJPRoutes')
+const userRoutes = require("./endpoints/userRoutes");
+const doencaRoutes = require("./endpoints/doencasRoutes");
+const docRoutes = require("./endpoints/docRoutes");
+const medicRoutes = require("./endpoints/medicRoutes")
+const formMSRoutes = require('./endpoints/formMSRoutes')
+const formPSRoutes = require('./endpoints/formPSRoutes')
+const formJPRoutes = require('./endpoints/formJPRoutes')
 
 // Initialize app
 const app = express();
