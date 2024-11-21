@@ -1,3 +1,39 @@
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       required:
+ *         - nome
+ *         - email
+ *         - senha
+ *       properties:
+ *         nome:
+ *           type: string
+ *           description: Nome completo do usuário.
+ *           example: João Silva
+ *         email:
+ *           type: string
+ *           description: Endereço de email do usuário. Deve ser único e válido.
+ *           example: joao.silva@example.com
+ *         senha:
+ *           type: string
+ *           description: Senha do usuário. Deve ter pelo menos 6 caracteres.
+ *           example: minhaSenha123
+ *         resetToken:
+ *           type: string
+ *           description: Token utilizado para redefinição de senha.
+ *           example: 12345abcdef
+ *         resetTokenExpires:
+ *           type: string
+ *           format: date-time
+ *           description: Data e hora de expiração do token de redefinição de senha.
+ *           example: 2024-11-21T10:30:00.000Z
+ *       description: Esquema para a entidade Usuário no sistema, com campos obrigatórios para nome, email e senha. Inclui funcionalidades para redefinição de senha.
+ */
+
+
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs"); // Adicionando bcryptjs para hashing
 const { Schema } = mongoose;

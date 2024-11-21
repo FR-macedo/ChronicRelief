@@ -1,3 +1,152 @@
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     FormJPDiario:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *           description: ID do formulário (gerado automaticamente)
+ *           readOnly: true
+ *         userId:
+ *           type: string
+ *           description: ID do usuário
+ *           example: '654321abcdef123456'
+ *         dataRegistro:
+ *           type: string
+ *           format: date-time
+ *           description: Data e hora do registro
+ *           example: '2024-10-27T10:30:00Z'
+ *         nivelAnsiedade:
+ *           type: integer
+ *           description: Nível de ansiedade (1-10)
+ *           minimum: 1
+ *           maximum: 10
+ *           example: 7
+ *         sintomas:
+ *           type: array
+ *           items:
+ *             type: string
+ *             enum:
+ *               - Palpitações
+ *               - Falta de ar
+ *               - Dificuldade de concentração
+ *               - Insônia
+ *               - Tensão muscular
+ *               - Irritabilidade
+ *               - Procrastinação
+ *               - Outros
+ *           description: Sintomas apresentados
+ *           example: ['Palpitações', 'Insônia']
+ *         outrosSintomas:
+ *           type: string
+ *           description: Outros sintomas (se aplicável)
+ *           example: 'Dor de cabeça leve'
+ *         tecnicasRelaxamento:
+ *           type: array
+ *           items:
+ *             type: string
+ *             enum:
+ *               - 'Meditação (Headspace)'
+ *               - 'Exercícios de respiração'
+ *               - 'Corrida'
+ *               - 'Jogos'
+ *               - 'Outros'
+ *           description: Técnicas de relaxamento utilizadas
+ *           example: ['Meditação (Headspace)', 'Exercícios de respiração']
+ *         outraTecnicaRelaxamento:
+ *           type: string
+ *           description: Outra técnica de relaxamento (se aplicável)
+ *           example: 'Yoga'
+ *         tempoTecnicasRelaxamento:
+ *           type: string
+ *           description: Tempo dedicado às técnicas de relaxamento
+ *           example: '30 minutos'
+ *         humorGeral:
+ *           type: integer
+ *           description: Humor geral (1-10)
+ *           minimum: 1
+ *           maximum: 10
+ *           example: 5
+ *         observacoes:
+ *           type: string
+ *           description: Observações adicionais
+ *           example: 'Dia bastante agitado no trabalho.'
+ *       required:
+ *         - userId
+ *         - dataRegistro
+ *         - nivelAnsiedade
+ *         - sintomas
+ *         - tecnicasRelaxamento
+ *         - humorGeral
+ *     FormJPSemanal:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *           description: ID do formulário (gerado automaticamente)
+ *           readOnly: true
+ *         userId:
+ *           type: string
+ *           description: ID do usuário
+ *           example: '654321abcdef123456'
+ *         dataConsultaAnterior:
+ *           type: string
+ *           format: date
+ *           description: Data da consulta anterior
+ *           example: '2024-10-20'
+ *         nivelAnsiedadeMedia:
+ *           type: integer
+ *           description: Nível médio de ansiedade (1-10)
+ *           minimum: 1
+ *           maximum: 10
+ *           example: 6
+ *         fatoresAumentoAnsiedade:
+ *           type: array
+ *           items:
+ *             type: string
+ *             enum:
+ *               - Trabalho
+ *               - 'Relações interpessoais'
+ *               - 'Eventos sociais'
+ *               - Notícias
+ *               - Outros
+ *           description: Fatores que aumentaram a ansiedade
+ *           example: ['Trabalho', 'Relações interpessoais']
+ *         outrosFatoresAumentoAnsiedade:
+ *           type: string
+ *           description: Outros fatores que aumentaram a ansiedade
+ *           example: 'Problemas financeiros'
+ *         fatoresReducaoAnsiedade:
+ *           type: array
+ *           items:
+ *             type: string
+ *             enum:
+ *               - Meditação
+ *               - Corrida
+ *               - Jogos
+ *               - Terapia
+ *               - Outros
+ *           description: Fatores que reduziram a ansiedade
+ *           example: ['Meditação', 'Terapia']
+ *         outrosFatoresReducaoAnsiedade:
+ *           type: string
+ *           description: Outros fatores que reduziram a ansiedade
+ *           example: 'Passar tempo na natureza'
+ *         observacoes:
+ *           type: string
+ *           description: Observações adicionais
+ *           example: 'Semana desafiadora, mas consegui manter o controle.'
+ *       required:
+ *         - userId
+ *         - dataConsultaAnterior
+ *         - nivelAnsiedadeMedia
+ *         - fatoresAumentoAnsiedade
+ *         - fatoresReducaoAnsiedade
+ *
+ */
+
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 

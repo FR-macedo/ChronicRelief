@@ -1,3 +1,39 @@
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Doenca:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *           description: ID da doença (gerado automaticamente pelo MongoDB)
+ *           readOnly: true
+ *         nome:
+ *           type: string
+ *           description: Nome da doença
+ *           example: 'Doença X'
+ *         userId:
+ *           type: string
+ *           description: ID do usuário
+ *           example: '654321abcdef123456'
+ *         sintomas:
+ *           type: array
+ *           items:
+ *             type: string
+ *           description: Lista de sintomas
+ *           example: ['Sintoma A', 'Sintoma B']
+ *         dataDiagnostico:
+ *           type: string
+ *           format: date
+ *           description: Data do diagnóstico
+ *           example: '2024-10-27'
+ *       required:
+ *         - nome
+ *         - userId
+ *         - sintomas
+ *         - dataDiagnostico
+ */
 
 const mongoose = require('mongoose');
 const { Schema } = mongoose;

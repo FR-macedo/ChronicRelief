@@ -1,3 +1,149 @@
+/**
+ * @swagger
+ * tags:
+ *   - name: Medicações
+ *     description: Gestão de Medicações
+ */
+
+/**
+ * @swagger
+ * /medicacoes:
+ *   post:
+ *     summary: Cria uma nova medicação.
+ *     tags: [Medicações]
+ *     security:
+ *       - bearerAuth: []  
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Medicacao'
+ *     responses:
+ *       '201':
+ *         description: Medicação criada com sucesso.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Medicacao'
+ *       '400':
+ *         description: Medicação já existente ou dados inválidos.
+ */
+
+/**
+ * @swagger
+ * /medicacoes:
+ *   get:
+ *     summary: Obtém todas as medicações do usuário.
+ *     tags: [Medicações]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: Authorization
+ *         schema:
+ *           type: string
+ *           description: Bearer Token
+ *         required: true
+ *     responses:
+ *       '200':
+ *         description: Lista de medicações.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Medicacao'
+ *       '400':
+ *         description: Erro ao obter medicações.
+ *       '404':
+ *         description: Nenhuma medicação encontrada.
+ */
+
+/**
+ * @swagger
+ * /medicacoes/{nome}:
+ *   get:
+ *     summary: Obtém uma medicação pelo nome.
+ *     tags: [Medicações]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: nome
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Nome da medicação.
+ *     responses:
+ *       '200':
+ *         description: Medicação encontrada.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Medicacao'
+ *       '404':
+ *         description: Medicação não encontrada.
+ */
+
+/**
+ * @swagger
+ * /medicacoes/{id}:
+ *   put:
+ *     summary: Atualiza uma medicação.
+ *     tags: [Medicações]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID da medicação.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Medicacao'
+ *     responses:
+ *       '200':
+ *         description: Medicação atualizada com sucesso.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Medicacao'
+ *       '400':
+ *         description: ID inválido ou dados inválidos.
+ *       '404':
+ *         description: Medicação não encontrada.
+ */
+
+/**
+ * @swagger
+ * /medicacoes/{id}:
+ *   delete:
+ *     summary: Deleta uma medicação.
+ *     tags: [Medicações]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID da medicação.
+ *     responses:
+ *       '200':
+ *         description: Medicação deletada com sucesso.
+ *       '400':
+ *         description: ID inválido.
+ *       '404':
+ *         description: Medicação não encontrada.
+ */
+
 const mongoose = require('mongoose');
 const Medicacao = require('../models/medicacao');
 

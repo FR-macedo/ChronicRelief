@@ -1,3 +1,135 @@
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     FormMSDiario:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *           description: ID do formulário (gerado automaticamente)
+ *           readOnly: true
+ *         userId:
+ *           type: string
+ *           description: ID do usuário
+ *           example: '654321abcdef123456'
+ *         dataRegistro:
+ *           type: string
+ *           format: date-time
+ *           description: Data e hora do registro
+ *           example: '2024-10-27T10:30:00Z'
+ *         medicamentosTomados:
+ *           type: array
+ *           items:
+ *             type: string
+ *           description: Lista de medicamentos tomados
+ *           example: ['Medicamento A', 'Medicamento B']
+ *         outrosMedicamentos:
+ *           type: string
+ *           description: Outros medicamentos (se aplicável)
+ *           example: 'Complexo vitamínico'
+ *         sintomas:
+ *           type: array
+ *           items:
+ *             type: string
+ *             enum:
+ *               - Febre
+ *               - 'Dores de cabeça'
+ *               - Fadiga
+ *               - Tosse
+ *               - Diarreia
+ *               - 'Dor de garganta'
+ *               - Outros
+ *           description: Sintomas apresentados
+ *           example: ['Febre', 'Tosse']
+ *         outrosSintomas:
+ *           type: string
+ *           description: Outros sintomas (se aplicável)
+ *           example: 'Dor muscular'
+ *         humorGeral:
+ *           type: integer
+ *           description: Humor geral (1-10)
+ *           minimum: 1
+ *           maximum: 10
+ *           example: 8
+ *         alimentacao:
+ *           type: array
+ *           items:
+ *             type: string
+ *             enum:
+ *               - 'Refeições balanceadas'
+ *               - 'Frutas e vegetais'
+ *               - 'Alimentos ricos em proteínas'
+ *               - Outros
+ *           description: Itens de alimentação consumidos
+ *           example: ['Refeições balanceadas', 'Frutas e vegetais']
+ *         outraAlimentacao:
+ *           type: string
+ *           description: Outros itens de alimentação (se aplicável)
+ *           example: 'Suco de laranja natural'
+ *         observacoes:
+ *           type: string
+ *           description: Observações adicionais
+ *           example: 'Dieta seguida corretamente.'
+ *       required:
+ *         - userId
+ *         - dataRegistro
+ *         - medicamentosTomados
+ *         - sintomas
+ *         - humorGeral
+ *         - alimentacao
+ *     FormMSSemanal:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *           description: ID do formulário (gerado automaticamente)
+ *           readOnly: true
+ *         userId:
+ *           type: string
+ *           description: ID do usuário
+ *           example: '654321abcdef123456'
+ *         dataConsultaAnterior:
+ *           type: string
+ *           format: date
+ *           description: Data da consulta anterior
+ *           example: '2024-10-20'
+ *         sintomasFrequentes:
+ *           type: array
+ *           items:
+ *             type: string
+ *             enum:
+ *               - Febre
+ *               - 'Dores de cabeça'
+ *               - Fadiga
+ *               - Tosse
+ *               - Diarreia
+ *               - 'Dor de garganta'
+ *               - Outros
+ *           description: Sintomas frequentes na semana
+ *           example: ['Fadiga', 'Dores de cabeça']
+ *         outrosSintomasFrequentes:
+ *           type: string
+ *           description: Outros sintomas frequentes (se aplicável)
+ *           example: 'Dor nas articulações'
+ *         humorGeralMedia:
+ *           type: integer
+ *           description: Humor geral médio (1-10)
+ *           minimum: 1
+ *           maximum: 10
+ *           example: 7
+ *         observacoes:
+ *           type: string
+ *           description: Observações adicionais
+ *           example: 'Melhora significativa dos sintomas.'
+ *       required:
+ *         - userId
+ *         - dataConsultaAnterior
+ *         - sintomasFrequentes
+ *         - humorGeralMedia
+ *
+ */
+
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
