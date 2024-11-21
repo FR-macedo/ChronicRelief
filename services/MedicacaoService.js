@@ -7,7 +7,7 @@
 
 /**
  * @swagger
- * /medicacoes:
+ * /medicacoes/create:
  *   post:
  *     summary: Cria uma nova medicação.
  *     tags: [Medicações]

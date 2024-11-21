@@ -7,7 +7,7 @@
 
 /**
  * @swagger
- * /formMS/diario:
+ * /formMS/diario/create:
  *   post:
  *     summary: Criar um novo formulário diário MS.
  *     tags: [Formulários MS]
@@ -112,7 +112,7 @@
 
 /**
  * @swagger
- * /formMS/semanal:
+ * /formMS/semanal/create:
  *   post:
  *     summary: Criar um novo formulário semanal MS.
  *     tags: [Formulários MS]

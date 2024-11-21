@@ -7,7 +7,7 @@
 
 /**
  * @swagger
- * /formJP/diario:
+ * /formJP/diario/create:
  *   post:
  *     summary: Criar um novo formulário diário JP.
  *     tags: [Formulários JP]
@@ -112,7 +112,7 @@
 
 /**
  * @swagger
- * /formJP/semanal:
+ * /formJP/semanal/create:
  *   post:
  *     summary: Criar um novo formulário semanal JP.
  *     tags: [Formulários JP]

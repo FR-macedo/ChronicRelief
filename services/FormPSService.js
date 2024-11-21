@@ -7,7 +7,7 @@
 
 /**
  * @swagger
- * /formPS/diario:
+ * /formPS/diario/create:
  *   post:
  *     summary: Criar um novo formulário diário PS.
  *     tags: [Formulários PS]
@@ -112,7 +112,7 @@
 
 /**
  * @swagger
- * /formPS/semanal:
+ * /formPS/semanal/create:
  *   post:
  *     summary: Criar um novo formulário semanal PS.
  *     tags: [Formulários PS]

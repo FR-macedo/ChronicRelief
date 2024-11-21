@@ -40,13 +40,13 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // Routes
-app.use("/api/users", userRoutes);
-app.use("/api/doencas", doencaRoutes);
-app.use("/api/documentos", docRoutes);
-app.use("/api/medicacoes", medicRoutes);
-app.use("/api/forms/MS", formMSRoutes);
-app.use("/api/forms/PS", formPSRoutes);
-app.use("/api/forms/JP", formJPRoutes);
+app.use("/users", userRoutes);
+app.use("/doencas", doencaRoutes);
+app.use("/documentos", docRoutes);
+app.use("/medicacoes", medicRoutes);
+app.use("/formMS", formMSRoutes);
+app.use("/formPS", formPSRoutes);
+app.use("/formJP", formJPRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

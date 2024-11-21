@@ -7,7 +7,7 @@
 
 /**
  * @swagger
- * /doencas:
+ * /doencas/create:
  *   post:
  *     summary: Criar uma nova doença.
  *     tags: [Doenças]

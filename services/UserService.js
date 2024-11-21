@@ -7,7 +7,7 @@
 
 /**
  * @swagger
- * /users:
+ * /users/register:
  *   post:
  *     summary: Registra um novo usuário.
  *     tags: [Users]

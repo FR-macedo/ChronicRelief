@@ -7,7 +7,7 @@
 
 /**
  * @swagger
- * /documentos:
+ * /documentos/upload:
  *   post:
  *     summary: Faz upload de um novo documento.
  *     tags: [Documentos]
